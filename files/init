@@ -1,0 +1,30 @@
+#!/usr/bin/dumb-init /bin/sh
+# shellcheck shell=sh
+
+set -e
+
+_uid=$(id -u)
+
+if [ "$_uid" = '0' ]; then
+    if [ "$APP_UID" != '1001' ] || [ "$APP_GID" != '1001' ]; then
+        sed -i -e "s/^app:x:1001:1001/app:x:$APP_UID:$APP_GID/" /etc/passwd
+        sed -i -e "s/^app:x:1001:/app:x:$APP_GID:/" /etc/group
+        chown -R "$APP_UID:$APP_GID" /srv /home/app
+    fi
+fi
+echo Current app user: "$(id app)"
+echo Timezone: "$TZ"
+date
+
+if [ -f /srv/init.sh ]; then
+    echo Running /srv/init.sh
+    chmod 755 /srv/init.sh
+    /srv/init.sh
+fi
+
+if [ "$_uid" = '0' ]; then
+    echo Dropping root privileges to app
+    exec /sbin/su-exec app "$@"
+else
+    exec "$@"
+fi
