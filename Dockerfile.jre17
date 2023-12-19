@@ -14,6 +14,6 @@ RUN \
    chown -R app:app /srv && \
    ln -s /usr/share/zoneinfo/Europe/Riga /etc/localtime
 
-WORKDIR /svc
+WORKDIR /srv
 
 ENTRYPOINT [ "/init" ]
