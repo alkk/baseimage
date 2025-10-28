@@ -1,10 +1,10 @@
-FROM alpine:3.21
+FROM alpine:3.22
 
 ENV \
    TERM=xterm-color \
    TZ=Europe/Riga \
-   APP_UID=1001 \
-   APP_GID=1001
+   APP_UID=101 \
+   APP_GID=990
 
 COPY --chown=root:wheel --chmod=755 files/init files/init-root /
 
