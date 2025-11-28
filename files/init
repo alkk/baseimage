@@ -18,7 +18,7 @@ date
 
 if [ -f /srv/init.sh ]; then
     echo Running /srv/init.sh
-    chmod 755 /srv/init.sh
+    [ -x /srv/init.sh ] || chmod +x /srv/init.sh
     /srv/init.sh
 fi
 
