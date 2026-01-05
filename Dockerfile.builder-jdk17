@@ -3,7 +3,7 @@ FROM alpine:3.22
 ENV \
    TERM=xterm-color \
    TZ=Europe/Riga \
-   PATH=${PATH}:/apache-maven-3.9.11/bin
+   PATH=${PATH}:/apache-maven-3.9.12/bin
 
 RUN \
    apk add --update --no-cache ca-certificates curl git openjdk17-jdk tzdata && \
