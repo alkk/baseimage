@@ -8,6 +8,7 @@ Alpine- and Debian-based Docker images with Java runtime environments and build 
 |-------|-----|---------|
 | Base | `ghcr.io/alkk/baseimage:latest` | Minimal Alpine with essential utilities |
 | Base (Debian) | `ghcr.io/alkk/baseimage/debian:latest` | Minimal Debian with essential utilities |
+| JRE 8 | `ghcr.io/alkk/baseimage/jre8:latest` | Java 8 runtime |
 | JRE 17 | `ghcr.io/alkk/baseimage/jre17:latest` | Java 17 runtime |
 | JRE 21 | `ghcr.io/alkk/baseimage/jre21:latest` | Java 21 runtime |
 | JDK 17 Builder | `ghcr.io/alkk/baseimage/builder-jdk17:latest` | Java 17 build environment with Maven |
@@ -48,7 +49,7 @@ CMD ["/srv/myapp"]
 Runtime images for Java applications. Include automatic privilege dropping to non-root user.
 
 ```dockerfile
-FROM ghcr.io/alkk/baseimage/jre{17,21}:latest
+FROM ghcr.io/alkk/baseimage/jre{8,17,21}:latest
 
 COPY target/myapp.jar /srv/app.jar
 CMD ["java", "-jar", "/srv/app.jar"]
@@ -59,7 +60,7 @@ CMD ["java", "-jar", "/srv/app.jar"]
 Create `/srv/init.sh` to run custom initialization before your application starts:
 
 ```dockerfile
-FROM ghcr.io/alkk/baseimage/jre{17,21}:latest
+FROM ghcr.io/alkk/baseimage/jre{8,17,21}:latest
 
 COPY init.sh /srv/init.sh
 COPY target/myapp.jar /srv/app.jar
@@ -85,7 +86,7 @@ COPY pom.xml .
 COPY src ./src
 RUN mvn package
 
-FROM ghcr.io/alkk/baseimage/jre{17,21}:latest
+FROM ghcr.io/alkk/baseimage/jre{8,17,21}:latest
 COPY --from=builder /build/target/*.jar /srv/app.jar
 CMD ["java", "-jar", "/srv/app.jar"]
 ```
@@ -103,13 +104,13 @@ CMD ["java", "-jar", "/srv/app.jar"]
 Run container with custom user/group IDs:
 
 ```bash
-docker run -e APP_UID=1000 -e APP_GID=1000 ghcr.io/alkk/baseimage/jre{17,21}:latest
+docker run -e APP_UID=1000 -e APP_GID=1000 ghcr.io/alkk/baseimage/jre{8,17,21}:latest
 ```
 
 ### Custom Timezone
 
 ```bash
-docker run -e TZ=UTC ghcr.io/alkk/baseimage/jre{17,21}:latest
+docker run -e TZ=UTC ghcr.io/alkk/baseimage/jre{8,17,21}:latest
 ```
 
 ## Building Images Locally
@@ -118,6 +119,7 @@ docker run -e TZ=UTC ghcr.io/alkk/baseimage/jre{17,21}:latest
 make all                           # Build all images
 make docker-baseimage              # Build Alpine base image only
 make docker-baseimage-debian       # Build Debian base image only
+make docker-baseimage-jre8         # Build JRE 8 only
 make docker-baseimage-jre17        # Build JRE 17 only
 make docker-baseimage-jre21        # Build JRE 21 only
 make docker-baseimage-jdk17-builder # Build JDK 17 builder only
