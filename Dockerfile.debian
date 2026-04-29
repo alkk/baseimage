@@ -1,0 +1,24 @@
+FROM debian:trixie-slim
+
+ENV \
+    TERM=xterm-color \
+    TZ=Europe/Riga \
+    APP_UID=101 \
+    APP_GID=990 \
+    DEBIAN_FRONTEND=noninteractive
+
+COPY --chown=root:root --chmod=755 files/init files/init-root /
+
+RUN \
+    apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates dumb-init gosu tzdata && \
+    rm -rf /var/lib/apt/lists/* && \
+    groupadd -g ${APP_GID} app && \
+    useradd -m -g app -s /bin/sh -u ${APP_UID} app && \
+    ln -s /usr/sbin/gosu /sbin/su-exec && \
+    mkdir -p /srv && chown -R app:app /srv && \
+    ln -sf /usr/share/zoneinfo/Europe/Riga /etc/localtime
+
+WORKDIR /srv
+
+ENTRYPOINT [ "/init" ]

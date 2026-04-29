@@ -1,12 +1,13 @@
 # Docker Base Images
 
-Alpine-based Docker images with Java runtime environments and build tools.
+Alpine- and Debian-based Docker images with Java runtime environments and build tools.
 
 ## Available Images
 
 | Image | Tag | Purpose |
 |-------|-----|---------|
 | Base | `ghcr.io/alkk/baseimage:latest` | Minimal Alpine with essential utilities |
+| Base (Debian) | `ghcr.io/alkk/baseimage/debian:latest` | Minimal Debian with essential utilities |
 | JRE 17 | `ghcr.io/alkk/baseimage/jre17:latest` | Java 17 runtime |
 | JRE 21 | `ghcr.io/alkk/baseimage/jre21:latest` | Java 21 runtime |
 | JDK 17 Builder | `ghcr.io/alkk/baseimage/builder-jdk17:latest` | Java 17 build environment with Maven |
@@ -22,6 +23,21 @@ Minimal Alpine image with essential utilities for running applications.
 
 ```dockerfile
 FROM ghcr.io/alkk/baseimage:latest
+
+COPY myapp /srv/myapp
+CMD ["/srv/myapp"]
+```
+
+## Base Image (Debian)
+
+Minimal Debian (trixie-slim) image, drop-in equivalent of the Alpine base. Uses
+`gosu` instead of `su-exec` (symlinked at `/sbin/su-exec` so the same `/init`
+script works).
+
+**Included packages:** ca-certificates, dumb-init, gosu, tzdata
+
+```dockerfile
+FROM ghcr.io/alkk/baseimage/debian:latest
 
 COPY myapp /srv/myapp
 CMD ["/srv/myapp"]
@@ -100,7 +116,8 @@ docker run -e TZ=UTC ghcr.io/alkk/baseimage/jre{17,21}:latest
 
 ```bash
 make all                           # Build all images
-make docker-baseimage              # Build base image only
+make docker-baseimage              # Build Alpine base image only
+make docker-baseimage-debian       # Build Debian base image only
 make docker-baseimage-jre17        # Build JRE 17 only
 make docker-baseimage-jre21        # Build JRE 21 only
 make docker-baseimage-jdk17-builder # Build JDK 17 builder only
