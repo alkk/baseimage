@@ -13,6 +13,7 @@ Alpine- and Debian-based Docker images with Java runtime environments and build 
 | JRE 21 | `ghcr.io/alkk/baseimage/jre21:latest` | Java 21 runtime |
 | JDK 17 Builder | `ghcr.io/alkk/baseimage/builder-jdk17:latest` | Java 17 build environment with Maven |
 | JDK 21 Builder | `ghcr.io/alkk/baseimage/builder-jdk21:latest` | Java 21 build environment with Maven |
+| Go Builder | `ghcr.io/alkk/baseimage/builder-go:latest` | Go build environment (extends `umputun/baseimage/buildgo`, TZ=Europe/Riga) |
 
 All images support `linux/amd64` and `linux/arm64` architectures.
 
@@ -124,6 +125,7 @@ make docker-baseimage-jre17        # Build JRE 17 only
 make docker-baseimage-jre21        # Build JRE 21 only
 make docker-baseimage-jdk17-builder # Build JDK 17 builder only
 make docker-baseimage-jdk21-builder # Build JDK 21 builder only
+make docker-baseimage-go-builder    # Build Go builder only
 make clean                         # Remove all images
 ```
 

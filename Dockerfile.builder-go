@@ -1,0 +1,8 @@
+FROM ghcr.io/umputun/baseimage/buildgo:latest
+
+ENV TIME_ZONE=Europe/Riga
+
+RUN \
+    echo "${TIME_ZONE}" > /etc/timezone && \
+    cp /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime && \
+    date

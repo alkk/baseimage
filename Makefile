@@ -1,4 +1,4 @@
-.PHONY: all clean docker-baseimage docker-baseimage-debian docker-baseimage-jre8 docker-baseimage-jre17 docker-baseimage-jdk17-builder docker-baseimage-jre21 docker-baseimage-jdk21-builder
+.PHONY: all clean docker-baseimage docker-baseimage-debian docker-baseimage-jre8 docker-baseimage-jre17 docker-baseimage-jdk17-builder docker-baseimage-jre21 docker-baseimage-jdk21-builder docker-baseimage-go-builder
 
 ifdef CI
 ADDITIONAL_ARGUMENTS=--progress=plain
@@ -8,7 +8,7 @@ endif
 
 TAG=latest
 
-all: docker-baseimage docker-baseimage-debian docker-baseimage-jre8 docker-baseimage-jre17 docker-baseimage-jdk17-builder docker-baseimage-jre21 docker-baseimage-jdk21-builder
+all: docker-baseimage docker-baseimage-debian docker-baseimage-jre8 docker-baseimage-jre17 docker-baseimage-jdk17-builder docker-baseimage-jre21 docker-baseimage-jdk21-builder docker-baseimage-go-builder
 
 docker-baseimage:
 	docker build -t ghcr.io/alkk/baseimage:$(TAG) . $(ADDITIONAL_ARGUMENTS)
@@ -31,6 +31,9 @@ docker-baseimage-jre21:
 docker-baseimage-jdk21-builder:
 	docker build -t ghcr.io/alkk/baseimage/builder-jdk21:$(TAG) -f Dockerfile.builder-jdk21 . $(ADDITIONAL_ARGUMENTS)
 
+docker-baseimage-go-builder:
+	docker build -t ghcr.io/alkk/baseimage/builder-go:$(TAG) -f Dockerfile.builder-go . $(ADDITIONAL_ARGUMENTS)
+
 clean:
 	docker image rm ghcr.io/alkk/baseimage:$(TAG) || true
 	docker image rm ghcr.io/alkk/baseimage/debian:$(TAG) || true
@@ -39,3 +42,4 @@ clean:
 	docker image rm ghcr.io/alkk/baseimage/builder-jdk17:$(TAG) || true
 	docker image rm ghcr.io/alkk/baseimage/jre21:$(TAG) || true
 	docker image rm ghcr.io/alkk/baseimage/builder-jdk21:$(TAG) || true
+	docker image rm ghcr.io/alkk/baseimage/builder-go:$(TAG) || true
