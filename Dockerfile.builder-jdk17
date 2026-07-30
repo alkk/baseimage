@@ -6,7 +6,8 @@ ENV \
    PATH=${PATH}:/apache-maven-3.9.15/bin
 
 RUN \
-   apk add --update --no-cache ca-certificates curl git openjdk17-jdk tzdata && \
+   apk upgrade --update --no-cache && \
+   apk add --no-cache ca-certificates curl git openjdk17-jdk tzdata && \
    ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 
 ADD files/apache-maven-3.9.15-bin.tar.gz /
